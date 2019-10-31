@@ -2,7 +2,7 @@
     "name": "junichimura/view-args",
     "require": {
         "php": ">=7",
-        "illuminate/contracts": "~5.5"
+        "illuminate/contracts": "~6|~5.5"
     },
     "license": "MIT",
     "authors": [
