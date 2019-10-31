@@ -7,10 +7,9 @@
 
 ## Usage example [Laravel only]
 
+#### example 1: View-Args class
 ```php
 <?php
-
-namespace App\Util;
 
 use Junichimura\ViewArgs\FormArgs;
 
@@ -18,62 +17,64 @@ class InputFormArgs extends FormArgs
 {
 
     public $label;
-    public $value;
     public $type;
-    public $name;
-    public $placeholder;
+    public $disabled;
 
-    public function __construct($label, $value)
+    public function __construct($label, $type)
     {
         $this->label = $label;
-        $this->value = $value;
-        $this->type = 'text';
+        $this->type = $type;
     }
 
-    public function name($name)
+    public function disabled($condition = true)
     {
-        $this->name = $name;
+        $this->disabled = (bool)$condition;
         return $this;
     }
 
-    public function placeholder($placeholder)
+    public static function make($label, $type = 'text')
     {
-        $this->placeholder = $placeholder;
-        return $this;
-    }
-
-    public static function make($label, $value)
-    {
-        return new static($label, $value);
+        return new static($label, $type);
     }
 
 }
 ```
 
+#### example 2: Blade Template
 ```blade
 {{-- views/sample/input.blade.php --}}
 <div class="form-group">
     <label>{{ $args['label'] }}</label>
     <input class="form-group" name="{{ $args->name }}" type="{{ $args->type }}"
-           @isset( $args->value ) value="{{ $args->value }}" @endisset
-           placeholder="{{ $args->placeholder }}">
+            @isset( $args->value ) value="{{ $args->value }}" @endisset
+            placeholder="{{ $args->placeholder }}"
+            @if($args->disabled) disabled @endif>
     @error( $args->name )
     <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 </div>
 ```
 
+#### example 3: rendering blade template
 ```php
 <?php
 // routes/web.php
-
 Route::get('sample', function () {
     return view('sample.input', \InputFormArgs::make('Your Email', 'email')
-                                        ->type('type')
-                                        ->placeholder('your@email.org'));
+                                                ->value('junichimura@examle.org')
+                                                ->placeholder('your@email.org')
+                                                ->disabled());
 });
+```
+
+#### Results: generated html
+```html
+<div class="form-group">
+    <label>Your Email</label>
+    <input class="form-group" name="" type="email" value="junichimura@examle.org" placeholder="your@email.org" disabled >
+</div>
 ```
 
 ## License
 
-Laravel-Dotenv-Checker is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Laravel-View-Args is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
