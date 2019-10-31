@@ -1,5 +1,11 @@
 # Laravel-View-Args
 
+## Description
+
+This package is for Laravel only.<br>
+You can specify an object as a view argument.<br>
+saves you from hell from "view arguments"
+
 ## Install
 
 #### Composer
